@@ -31,27 +31,26 @@ License: GNU GPL v3. You should find a copy in the repository.
 #define ADC2 0x02
 #define ADC3 0x03
 
-class Liasis
-{
-	public:
-		Liasis();
-		bool begin();
-		float getThermo();
-		float getThermoC(uint8_t Accuracy = 0);
-		float getTemp();
-		String getHeader();
-		String getString();
+class Liasis {
+public:
+  Liasis();
+  bool begin();
+  float getThermo();
+  float getThermoC(uint8_t Accuracy = 0);
+  float getTemp();
+  String getHeader();
+  String getString();
 
-	private:
-		const float Beta = 3960;
-		const unsigned long timeout = 100;
+private:
+  const float Beta = 3960;
+  const unsigned long timeout = 100;
 
-		float TempConvert(float V, float Vcc, float R, float A, float B, float C, float D, float R25);
-		float TempConvert(float V, float Vcc, float R, float Beta, float R25);
-		unsigned int GetADC(unsigned int Num);
-		uint8_t WriteWord_LE(uint8_t Adr, uint8_t Command, unsigned int Data);
-		int ReadWord_LE(uint8_t Adr, uint8_t Command);
-		uint8_t SendCommand(uint8_t Adr, uint8_t Command);
+  float TempConvert(float V, float Vcc, float R, float A, float B, float C, float D, float R25);
+  float TempConvert(float V, float Vcc, float R, float Beta, float R25);
+  unsigned int GetADC(unsigned int Num);
+  uint8_t WriteWord_LE(uint8_t Adr, uint8_t Command, unsigned int Data);
+  int ReadWord_LE(uint8_t Adr, uint8_t Command);
+  uint8_t SendCommand(uint8_t Adr, uint8_t Command);
 };
 
 #endif
