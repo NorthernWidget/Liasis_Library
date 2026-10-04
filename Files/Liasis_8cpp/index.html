@@ -252,88 +252,75 @@ License: GNU GPL v3. You should find a copy in the repository.
 #include</span> <span class="cpf">"math.h"</span><span class="cp">
 #include</span> <span class="cpf">"Liasis.h"</span><span class="cp">
 </span>
-<span class="n">Liasis</span><span class="o">::</span><span class="n">Liasis</span><span class="p">()</span>
-<span class="p">{</span>
-
+<span class="n">Liasis</span><span class="o">::</span><span class="n">Liasis</span><span class="p">()</span> <span class="p">{</span>
 <span class="p">}</span>
 
-<span class="kt">bool</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span>
-<span class="p">{</span>
-    <span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
-    <span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="n">ADC_ADR</span><span class="p">);</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
-    <span class="n">WriteWord_LE</span><span class="p">(</span><span class="n">ADC_ADR</span><span class="p">,</span> <span class="n">ADC_CONF</span><span class="p">,</span> <span class="n">ADC_CONF_MASK</span><span class="p">);</span>
-    <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+<span class="kt">bool</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">begin</span><span class="p">()</span> <span class="p">{</span>
+  <span class="n">Wire</span><span class="p">.</span><span class="n">begin</span><span class="p">();</span>
+  <span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="n">ADC_ADR</span><span class="p">);</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">()</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="k">return</span> <span class="nb">false</span><span class="p">;</span>
+  <span class="n">WriteWord_LE</span><span class="p">(</span><span class="n">ADC_ADR</span><span class="p">,</span> <span class="n">ADC_CONF</span><span class="p">,</span> <span class="n">ADC_CONF_MASK</span><span class="p">);</span>
+  <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getThermo</span><span class="p">()</span>
-<span class="p">{</span>
-  <span class="k">return</span> <span class="n">GetADC</span><span class="p">(</span><span class="n">ADC1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">0.125</span><span class="p">);</span>
+<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getThermo</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="n">GetADC</span><span class="p">(</span><span class="n">ADC1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.125</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getThermoC</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Accuracy</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="kt">float</span> <span class="n">Val</span> <span class="o">=</span> <span class="p">(</span><span class="n">GetADC</span><span class="p">(</span><span class="n">ADC1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="mf">0.125</span><span class="p">)</span> <span class="o">-</span> <span class="mi">900</span><span class="p">)</span><span class="o">/</span><span class="mi">100</span><span class="p">;</span>
+<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getThermoC</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Accuracy</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">float</span> <span class="n">Val</span> <span class="o">=</span> <span class="p">(</span><span class="n">GetADC</span><span class="p">(</span><span class="n">ADC1</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">0.125</span><span class="p">)</span> <span class="o">-</span> <span class="mi">900</span><span class="p">)</span> <span class="o">/</span> <span class="mi">100</span><span class="p">;</span>
   <span class="kt">float</span> <span class="n">Conv</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
   <span class="kt">uint8_t</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-  <span class="k">if</span><span class="p">(</span><span class="n">Accuracy</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
-    <span class="kt">float</span> <span class="n">P</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">4.7335e-6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.224e-4</span><span class="p">,</span> <span class="mf">8.2641e-4</span><span class="p">,</span> <span class="mf">0.0017</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0213</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2526</span><span class="p">,</span> <span class="mf">7.3409</span><span class="p">,</span> <span class="mf">24.9717</span><span class="p">};</span>
+  <span class="k">if</span> <span class="p">(</span><span class="n">Accuracy</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">P</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">4.7335e-6</span><span class="p">,</span> <span class="o">-</span><span class="mf">1.224e-4</span><span class="p">,</span> <span class="mf">8.2641e-4</span><span class="p">,</span> <span class="mf">0.0017</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.0213</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2526</span><span class="p">,</span> <span class="mf">7.3409</span><span class="p">,</span> <span class="mf">24.9717</span> <span class="p">};</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">7</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">Conv</span> <span class="o">=</span> <span class="n">Conv</span> <span class="o">+</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">pow</span><span class="p">(</span><span class="n">Val</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">Conv</span> <span class="o">=</span> <span class="n">Conv</span> <span class="o">+</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">Val</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">);</span>
     <span class="p">}</span>
-  <span class="p">}</span>
-  <span class="k">else</span> <span class="p">{</span>
-    <span class="kt">float</span> <span class="n">P</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.0082</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2792</span><span class="p">,</span> <span class="mf">7.1477</span><span class="p">,</span> <span class="mf">25.1051</span><span class="p">};</span>
+  <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+    <span class="kt">float</span> <span class="n">P</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span> <span class="mf">0.0082</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.2792</span><span class="p">,</span> <span class="mf">7.1477</span><span class="p">,</span> <span class="mf">25.1051</span> <span class="p">};</span>
     <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span><span class="p">;</span>
-    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">Conv</span> <span class="o">=</span> <span class="n">Conv</span> <span class="o">+</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">*</span><span class="n">pow</span><span class="p">(</span><span class="n">Val</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">);</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">n</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">Conv</span> <span class="o">=</span> <span class="n">Conv</span> <span class="o">+</span> <span class="n">P</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">Val</span><span class="p">,</span> <span class="n">n</span> <span class="o">-</span> <span class="n">i</span><span class="p">);</span>
     <span class="p">}</span>
   <span class="p">}</span>
   <span class="k">return</span> <span class="n">Conv</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getTemp</span><span class="p">()</span>
-<span class="p">{</span>
-  <span class="kt">float</span> <span class="n">Val</span> <span class="o">=</span> <span class="kt">float</span><span class="p">(</span><span class="n">GetADC</span><span class="p">(</span><span class="n">ADC0</span><span class="p">))</span><span class="o">*</span><span class="p">(</span><span class="mf">1.25e-4</span><span class="p">);</span>
+<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getTemp</span><span class="p">()</span> <span class="p">{</span>
+  <span class="kt">float</span> <span class="n">Val</span> <span class="o">=</span> <span class="kt">float</span><span class="p">(</span><span class="n">GetADC</span><span class="p">(</span><span class="n">ADC0</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1.25e-4</span><span class="p">);</span>
   <span class="k">return</span> <span class="n">TempConvert</span><span class="p">(</span><span class="n">Val</span><span class="p">,</span> <span class="mf">1.8</span><span class="p">,</span> <span class="mf">10000.0</span><span class="p">,</span> <span class="n">Beta</span><span class="p">,</span> <span class="mf">100000.0</span><span class="p">)</span> <span class="o">-</span> <span class="mf">273.15</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">TempConvert</span><span class="p">(</span><span class="kt">float</span> <span class="n">V</span><span class="p">,</span> <span class="kt">float</span> <span class="n">Vcc</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R</span><span class="p">,</span> <span class="kt">float</span> <span class="n">A</span><span class="p">,</span> <span class="kt">float</span> <span class="n">B</span><span class="p">,</span> <span class="kt">float</span> <span class="n">C</span><span class="p">,</span> <span class="kt">float</span> <span class="n">D</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R25</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="kt">float</span> <span class="n">Rt</span> <span class="o">=</span> <span class="o">-</span><span class="n">R</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">Vcc</span><span class="o">/</span><span class="n">V</span><span class="p">));</span>
-  <span class="kt">float</span> <span class="n">LogRt</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">Rt</span><span class="o">/</span><span class="n">R25</span><span class="p">);</span>
-  <span class="kt">float</span> <span class="n">T</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">B</span><span class="o">*</span><span class="n">LogRt</span> <span class="o">+</span> <span class="n">C</span><span class="o">*</span><span class="n">pow</span><span class="p">(</span><span class="n">LogRt</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">D</span><span class="o">*</span><span class="n">pow</span><span class="p">(</span><span class="n">LogRt</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">));</span>
+<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">TempConvert</span><span class="p">(</span><span class="kt">float</span> <span class="n">V</span><span class="p">,</span> <span class="kt">float</span> <span class="n">Vcc</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R</span><span class="p">,</span> <span class="kt">float</span> <span class="n">A</span><span class="p">,</span> <span class="kt">float</span> <span class="n">B</span><span class="p">,</span> <span class="kt">float</span> <span class="n">C</span><span class="p">,</span> <span class="kt">float</span> <span class="n">D</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R25</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">float</span> <span class="n">Rt</span> <span class="o">=</span> <span class="o">-</span><span class="n">R</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">Vcc</span> <span class="o">/</span> <span class="n">V</span><span class="p">));</span>
+  <span class="kt">float</span> <span class="n">LogRt</span> <span class="o">=</span> <span class="n">log</span><span class="p">(</span><span class="n">Rt</span> <span class="o">/</span> <span class="n">R25</span><span class="p">);</span>
+  <span class="kt">float</span> <span class="n">T</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">(</span><span class="n">A</span> <span class="o">+</span> <span class="n">B</span> <span class="o">*</span> <span class="n">LogRt</span> <span class="o">+</span> <span class="n">C</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">LogRt</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">)</span> <span class="o">+</span> <span class="n">D</span> <span class="o">*</span> <span class="n">pow</span><span class="p">(</span><span class="n">LogRt</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">));</span>
   <span class="k">return</span> <span class="n">T</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">TempConvert</span><span class="p">(</span><span class="kt">float</span> <span class="n">V</span><span class="p">,</span> <span class="kt">float</span> <span class="n">Vcc</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R</span><span class="p">,</span> <span class="kt">float</span> <span class="n">Beta</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R25</span><span class="p">)</span>
-<span class="p">{</span>
-  <span class="kt">float</span> <span class="n">Rt</span> <span class="o">=</span> <span class="o">-</span><span class="n">R</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">Vcc</span><span class="o">/</span><span class="n">V</span><span class="p">));</span>
-  <span class="kt">float</span> <span class="n">T</span> <span class="o">=</span> <span class="mf">1.0</span><span class="o">/</span><span class="p">((</span><span class="mf">1.0</span><span class="o">/</span><span class="n">Beta</span><span class="p">)</span><span class="o">*</span><span class="n">log</span><span class="p">(</span><span class="n">Rt</span><span class="o">/</span><span class="n">R25</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="o">/</span><span class="mf">298.15</span><span class="p">);</span>
+<span class="kt">float</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">TempConvert</span><span class="p">(</span><span class="kt">float</span> <span class="n">V</span><span class="p">,</span> <span class="kt">float</span> <span class="n">Vcc</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R</span><span class="p">,</span> <span class="kt">float</span> <span class="n">Beta</span><span class="p">,</span> <span class="kt">float</span> <span class="n">R25</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">float</span> <span class="n">Rt</span> <span class="o">=</span> <span class="o">-</span><span class="n">R</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">Vcc</span> <span class="o">/</span> <span class="n">V</span><span class="p">));</span>
+  <span class="kt">float</span> <span class="n">T</span> <span class="o">=</span> <span class="mf">1.0</span> <span class="o">/</span> <span class="p">((</span><span class="mf">1.0</span> <span class="o">/</span> <span class="n">Beta</span><span class="p">)</span> <span class="o">*</span> <span class="n">log</span><span class="p">(</span><span class="n">Rt</span> <span class="o">/</span> <span class="n">R25</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span> <span class="o">/</span> <span class="mf">298.15</span><span class="p">);</span>
   <span class="k">return</span> <span class="n">T</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="n">String</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getHeader</span><span class="p">()</span>
-<span class="p">{</span>
+<span class="n">String</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getHeader</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="s">"IR_Long [mV],IR_Long [C],PyrgT [C],"</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="n">String</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getString</span><span class="p">()</span>
-<span class="p">{</span>
+<span class="n">String</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">getString</span><span class="p">()</span> <span class="p">{</span>
   <span class="k">return</span> <span class="n">String</span><span class="p">(</span><span class="n">getThermo</span><span class="p">())</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="n">String</span><span class="p">(</span><span class="n">getThermoC</span><span class="p">())</span> <span class="o">+</span> <span class="s">","</span> <span class="o">+</span> <span class="n">String</span><span class="p">(</span><span class="n">getTemp</span><span class="p">())</span> <span class="o">+</span> <span class="s">","</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">GetADC</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">Num</span><span class="p">)</span>
-<span class="p">{</span>
+<span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">GetADC</span><span class="p">(</span><span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">Num</span><span class="p">)</span> <span class="p">{</span>
   <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">ADC_Config</span> <span class="o">=</span> <span class="n">ADC_CONF_MASK</span> <span class="o">|</span> <span class="p">(</span><span class="n">Num</span> <span class="o">&lt;&lt;</span> <span class="mi">12</span><span class="p">);</span>
   <span class="n">WriteWord_LE</span><span class="p">(</span><span class="n">ADC_ADR</span><span class="p">,</span> <span class="n">ADC_CONF</span><span class="p">,</span> <span class="n">ADC_Config</span><span class="p">);</span>
   <span class="n">delay</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span>
   <span class="k">return</span> <span class="n">ReadWord_LE</span><span class="p">(</span><span class="n">ADC_ADR</span><span class="p">,</span> <span class="n">ADC_CONV</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">uint8_t</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">WriteWord_LE</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Adr</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">Command</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">Data</span><span class="p">)</span>
-<span class="p">{</span>
+<span class="kt">uint8_t</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">WriteWord_LE</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Adr</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">Command</span><span class="p">,</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">Data</span><span class="p">)</span> <span class="p">{</span>
   <span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="n">Adr</span><span class="p">);</span>
   <span class="n">Wire</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">Command</span><span class="p">);</span>
   <span class="n">Wire</span><span class="p">.</span><span class="n">write</span><span class="p">((</span><span class="n">Data</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0xFF</span><span class="p">);</span>
@@ -341,28 +328,27 @@ License: GNU GPL v3. You should find a copy in the repository.
   <span class="k">return</span> <span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">();</span>
 <span class="p">}</span>
 
-<span class="kt">int</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">ReadWord_LE</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Adr</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">Command</span><span class="p">)</span>
-<span class="p">{</span>
+<span class="kt">int</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">ReadWord_LE</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Adr</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">Command</span><span class="p">)</span> <span class="p">{</span>
   <span class="kt">bool</span> <span class="n">Error</span> <span class="o">=</span> <span class="n">SendCommand</span><span class="p">(</span><span class="n">Adr</span><span class="p">,</span> <span class="n">Command</span><span class="p">);</span>
   <span class="kt">unsigned</span> <span class="kt">long</span> <span class="n">localTime</span> <span class="o">=</span> <span class="n">millis</span><span class="p">();</span>
   <span class="n">Wire</span><span class="p">.</span><span class="n">requestFrom</span><span class="p">(</span><span class="n">Adr</span><span class="p">,</span> <span class="mi">2</span><span class="p">);</span>
-  <span class="k">while</span><span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">millis</span><span class="p">()</span> <span class="o">-</span> <span class="n">localTime</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">);</span>
+  <span class="k">while</span> <span class="p">(</span><span class="n">Wire</span><span class="p">.</span><span class="n">available</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mi">2</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="n">millis</span><span class="p">()</span> <span class="o">-</span> <span class="n">localTime</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">timeout</span><span class="p">)</span>
+    <span class="p">;</span>
   <span class="kt">uint8_t</span> <span class="n">ByteHigh</span> <span class="o">=</span> <span class="n">Wire</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
   <span class="kt">uint8_t</span> <span class="n">ByteLow</span> <span class="o">=</span> <span class="n">Wire</span><span class="p">.</span><span class="n">read</span><span class="p">();</span>
   <span class="k">return</span> <span class="p">((</span><span class="n">ByteHigh</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="n">ByteLow</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="kt">uint8_t</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">SendCommand</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Adr</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">Command</span><span class="p">)</span>
-<span class="p">{</span>
-    <span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="n">Adr</span><span class="p">);</span>
-    <span class="n">Wire</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">Command</span><span class="p">);</span>
-    <span class="k">return</span> <span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">();</span>
+<span class="kt">uint8_t</span> <span class="n">Liasis</span><span class="o">::</span><span class="n">SendCommand</span><span class="p">(</span><span class="kt">uint8_t</span> <span class="n">Adr</span><span class="p">,</span> <span class="kt">uint8_t</span> <span class="n">Command</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">Wire</span><span class="p">.</span><span class="n">beginTransmission</span><span class="p">(</span><span class="n">Adr</span><span class="p">);</span>
+  <span class="n">Wire</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">Command</span><span class="p">);</span>
+  <span class="k">return</span> <span class="n">Wire</span><span class="p">.</span><span class="n">endTransmission</span><span class="p">();</span>
 <span class="p">}</span>
 </code></pre></div></div>
 
 <hr />
 
-<p>Updated on 2026-09-22 at 23:10:03 +0000</p>
+<p>Updated on 2026-10-04 at 04:51:59 +0000</p>
 
         
       </section>
